@@ -44,6 +44,20 @@ library(neonUtilities) # load package
   zipsByProduct(dpID="DP1.10102.001", site="all", package="basic", check.size=F)
   stackByTable(paste0(getwd(), "/filesToStack10102"), folder=T, saveUnzippedFiles = F)
 }
+# !!! Biomass only, no chemistry !!!!
+# Root sampling (Megapit), DP1.10066  
+#{
+#  zipsByProduct(dpID="DP1.10066.001", site="all", package="basic", check.size=F)
+#  stackByTable(paste0(getwd(), "/filesToStack10066"), folder=T, saveUnzippedFiles = F)
+#}
+
+# !!! No chemistry data here either !!!!
+# Root sampling tower plots, DP1.10067
+#{
+#  zipsByProduct(dpID="DP1.10067.001", site="all", package="basic", check.size=F)
+#  stackByTable(paste0(getwd(), "/filesToStack10067"), folder=T, saveUnzippedFiles = F)
+#}
+
 
 ### Get physiographic data about the plots (slope, aspect, etc) using geoNEON package
 # library(devtools) # load devTools if needed
@@ -66,13 +80,29 @@ cfc_var <- read.csv(paste
 names(cfc_var)
 cfc_var$scientificName
 cfc_var$individualID
-
 print(unique(cfc_var$scientificName))
+
 # root chemistry data
 bbc_chem <- read.csv(paste
                     (dir, "filesToStack10102/stackedFiles/bbc_rootChemistry.csv", 
                       sep = "/"), header = T)
 names(bbc_chem)
+
+# root data, but no chemistry! 
+##bbc_chem2 <- read.csv(paste
+#                     (dir, "filesToStack10067/stackedFiles/bbc_chemistryPooling.csv", 
+#                       sep = "/"), header = T)
+#bbc_mass <- read.csv(paste
+#                      (dir, "filesToStack10067/stackedFiles/bbc_rootmass.csv", 
+#                        sep = "/"), header = T)
+#names(bbc_chem2)
+names(bbc_mass)
+
+# root sampling, tower plots, only biomass, no chemistry
+#mpr_chem <- read.csv(paste
+#                     (dir, "filesToStack10066/stackedFiles/mpr_perrootsample.csv", 
+#                       sep = "/"), header = T)
+#names(mpr_chem)
 
 # use def.extr.geo.os function in geoNEON to get plot-level metadata
 cfc <- def.extr.geo.os(cfc_cn, 'namedLocation')
@@ -122,6 +152,21 @@ boxplot(bbc_chem$CNratio[bbc_chem$CNratio>10  & bbc_chem$CNratio<300] ~
         main = 'NEON root C:N', las=2, ) 
 abline(h=42, lty=2)
 print(unique(bbc_chem$siteID))
+
+# size class data included in bbc_chem$poolSampleID
+strsplit(as.character(bbc_chem$poolSampleID[93]), ".POOL", fixed = T)
+temp <- str_sub(as.character(bbc_chem$poolSampleID),25,29)
+sizeMin <- sapply(strsplit(temp,"-"), `[`, 1)
+sizeMax <- sapply(strsplit(temp,"-"), `[`, 2)  #select first element
+sizeMax <- sapply(strsplit(sizeMax,".", fixed = T), `[`, 1) #select text before dot
+sizeMin[sizeMin=='05'] <- '0.5'
+sizeMax[sizeMax=='05'] <- '0.5'
+bbc_chem$sizeMin <- as.numeric(sizeMin)
+bbc_chem$sizeMax <- as.numeric(sizeMax)
+boxplot(bbc_chem$CNratio[bbc_chem$CNratio>10  & bbc_chem$CNratio<300] ~ 
+          bbc_chem$sizeMax[bbc_chem$CNratio>10 & bbc_chem$CNratio<300],
+        main = 'NEON root C:N', las=2, xlab='max size') 
+abline(h=42, lty=2)
 
 # Write the file
 write.csv(foliar_chem, paste(dir2, "NEONfoliarChem_all.csv", sep = "/"), row.names = F)
