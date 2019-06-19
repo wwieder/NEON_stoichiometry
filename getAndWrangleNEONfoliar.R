@@ -96,7 +96,6 @@ names(bbc_chem)
 #                      (dir, "filesToStack10067/stackedFiles/bbc_rootmass.csv", 
 #                        sep = "/"), header = T)
 #names(bbc_chem2)
-names(bbc_mass)
 
 # root sampling, tower plots, only biomass, no chemistry
 #mpr_chem <- read.csv(paste
@@ -112,6 +111,9 @@ names(bbc)
 write.csv(cfc, paste(dir, "spatial_cfc.csv", sep = "/"), row.names = F)
 write.csv(bbc, paste(dir, "spatial_bbc.csv", sep = "/"), row.names = F)
 
+################
+#Start here if data already are local
+################
 
 ### Make 'master' files with phys-chem combined plus possible predictor variables
 library(tidyverse)
