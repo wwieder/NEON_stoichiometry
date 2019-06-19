@@ -154,10 +154,9 @@ abline(h=42, lty=2)
 print(unique(bbc_chem$siteID))
 
 # size class data included in bbc_chem$poolSampleID
-strsplit(as.character(bbc_chem$poolSampleID[93]), ".POOL", fixed = T)
 temp <- str_sub(as.character(bbc_chem$poolSampleID),25,29)
-sizeMin <- sapply(strsplit(temp,"-"), `[`, 1)
-sizeMax <- sapply(strsplit(temp,"-"), `[`, 2)  #select first element
+sizeMin <- sapply(strsplit(temp,"-"), `[`, 1)  #select first element
+sizeMax <- sapply(strsplit(temp,"-"), `[`, 2)  #select second element
 sizeMax <- sapply(strsplit(sizeMax,".", fixed = T), `[`, 1) #select text before dot
 sizeMin[sizeMin=='05'] <- '0.5'
 sizeMax[sizeMax=='05'] <- '0.5'
