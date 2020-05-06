@@ -7,6 +7,12 @@
 ### Modified for litter chemistry by W. Wieder April 2020
 ##########################################################################
 
+# Questions....
+# Not sure how to best align CN & lignin data?
+# also wondering how to consider leaves vs. needles
+# weight results by litter fluxes collected throughout year?
+# what do we do for chemistry in grassland sites
+
 # Add working directory for additional user as needed
 if (file.exists('/Users/wwieder/')){
   dir <- ("/Users/wwieder/Desktop/Working_files/INCyTE/NEONdata_files")
@@ -78,10 +84,6 @@ library(tidyverse)
 ltr_chem <- left_join(x = ltr_cn, y = ltr_lig, 
                              by = c("domainID", "siteID","namedLocation","plotID",  
                                     "plotType",'setDate',"collectDate"))
-
-# Not sure how to best align CN & lignin data?
-# also wondering how to consider leaves vs. needles
-# weight results by litter fluxes collected throughout year?
 
 names(ltr_chem)
 
