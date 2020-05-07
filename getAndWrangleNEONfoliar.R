@@ -135,7 +135,21 @@ foliar_chem  <- left_join(x = foliar_chem1, y = cfc_var,
 hist(foliar_chem$nitrogenPercent)
 hist(foliar_chem$foliarPhosphorusConc) 
 foliar_chem$NP <- foliar_chem$nitrogenPercent / foliar_chem$foliarPhosphorusConc
+
+names(foliar_chem)
+(foliar_chem$canopyPosition)
+[foliar_chem$plantStatus=='Leaves beginning to senesce']
+
 hist(foliar_chem$NP[foliar_chem$NP<50]) 
+# do we use OK or 0 for this
+foliar_chem$cnPercentQF[foliar_chem$cnPercentQF=='OK'] = 0
+boxplot(foliar_chem$CNratio[foliar_chem$cnPercentQF==0] ~ 
+        foliar_chem$siteID[foliar_chem$cnPercentQF==0], 
+        main = 'NEON foliar C:N', las=2) 
+
+print(mean(foliar_chem$CNratio[foliar_chem$siteID=='OKSR']))
+data.frame(foliar_chem$sampleCondition[foliar_chem$siteID=='TOOL'])
+
 boxplot(foliar_chem$NP[foliar_chem$NP<50] ~ 
           foliar_chem$siteID[foliar_chem$NP<50], 
         main = 'NEON foliar N:P', las=2) 

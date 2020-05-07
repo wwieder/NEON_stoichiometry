@@ -94,7 +94,8 @@ hist(ltr_chem$ligninPercent)
 print(ltr_chem$cnSampleCode)
 
 # group by siteID
-boxplot(ltr_chem$CNratio ~ ltr_chem$siteID, 
+boxplot(ltr_chem$CNratio[ltr_chem$cnPercentQF == 0] ~ 
+          ltr_chem$siteID[ltr_chem$cnPercentQF == 0], 
         main = 'NEON litter C:N', las=2) 
 
 boxplot(ltr_chem$ligninPercent ~ ltr_chem$siteID, 
