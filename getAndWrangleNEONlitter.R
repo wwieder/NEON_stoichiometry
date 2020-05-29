@@ -25,6 +25,9 @@ if (file.exists('/Users/wwieder/')){
 # install.packages("nneo") # install if needed, cran version
 # devtools::install_github("ropenscilabs/nneo") # install if needed, development version
 library(nneo)
+library(ggpubr)
+library(ggplot2)
+
 # make a table of all NEON Data Products (DPs)
 products <- nneo_products()
 
@@ -94,11 +97,17 @@ hist(ltr_chem$ligninPercent)
 print(ltr_chem$cnSampleCode)
 
 # group by siteID
+
+pdf(file = "NEON_lit.pdf", width = 6, height = 6) 
+ 
+par(mfrow=c(2,1), mar=c(4,5,1,1))
 boxplot(ltr_chem$CNratio[ltr_chem$cnPercentQF == 0] ~ 
           ltr_chem$siteID[ltr_chem$cnPercentQF == 0], 
-        main = 'NEON litter C:N', las=2) 
+        ylab = 'NEON litter C:N', las=2) 
 
+par(mar=c(5,5,0,1))
 boxplot(ltr_chem$ligninPercent ~ ltr_chem$siteID, 
-        main = 'NEON litter lignin (%)', las=2) 
+        ylab = 'NEON litter lignin (%)', las=2) 
 
+dev.off()
 
